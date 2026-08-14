@@ -2,6 +2,7 @@
 ########################################################################
 # IMPORTS
 
+import os
 import pandas as pd
 import numpy as np
 import matplotlib
@@ -52,7 +53,7 @@ from torch.optim.lr_scheduler import StepLR
 plot_folder = '/home/aghosh/projects/def-aghosh/aghosh/xgoal/expected_goals_plots/'
 
 # each season of shooting data for training
-# shots_dir = '/Users/akshayghosh/hockey/expected_goals_model/shot_data/' # local
+# shots_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data') + '/' # local repo data/ folder, populated by download_data.sh
 shots_dir = '/home/aghosh/projects/def-aghosh/aghosh/ncloud/data/xgoal_shot_data/' # narval
 
 fn_shots = [shots_dir + 'shots_2017_2018.csv',
@@ -214,7 +215,7 @@ X_train, X_val, y_train, y_val = train_test_split(X_postprocess_filtered.to_nump
 
 class XGoalNeuralNetwork(nn.Module):
 
-    def __init__(self, input_dim,in_features=30, h1=512, h2=256, h3=128, h4=64, out_features=1):
+    def __init__(self, input_dim, h1=512, h2=256, h3=128, h4=64, out_features=1):
         super().__init__()
 
         # define layers
@@ -248,11 +249,6 @@ class XGoalNeuralNetwork(nn.Module):
 
         # final output layer (no activation here, as it's regression)
         x = self.out(x)
-        # if self.training == False:
-        #     T = 1.0 # temperature in final layer, T > 1 reduces overconfidence and lowers probabilities
-        #     x = torch.sigmoid(self.out(x) / T)
-        # elif self.training == True:
-        #     x = self.out(x)
         return x
     
 ########################################################################

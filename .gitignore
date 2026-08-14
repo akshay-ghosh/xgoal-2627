@@ -1,0 +1,4 @@
+# downloaded shot data (fetched via download_data.sh, not versioned)
+/data/
+
+__pycache__/
